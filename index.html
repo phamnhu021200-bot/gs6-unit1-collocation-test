@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GS6 - Unit 1 Collocation Test (50 câu)</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --accent:#38bdf8; --accent2:#22c55e;
+    --text:#e2e8f0; --muted:#94a3b8; --danger:#ef4444; --warn:#f59e0b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:linear-gradient(180deg,#0f172a,#1e293b);
+    color:var(--text); min-height:100vh; padding:20px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{
+    background:var(--card); border-radius:16px; padding:20px 24px;
+    margin-bottom:18px; box-shadow:0 4px 20px rgba(0,0,0,.3);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+  }
+  header h1{font-size:1.3rem;margin:0 0 4px;}
+  header p{margin:0;color:var(--muted);font-size:.9rem;}
+  #timer{
+    font-size:1.4rem;font-weight:700;color:var(--accent);
+    background:#0f172a;padding:8px 16px;border-radius:10px;min-width:90px;text-align:center;
+  }
+  #timer.warn{color:var(--danger);}
+  .card{
+    background:var(--card);border-radius:16px;padding:22px 24px;margin-bottom:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.25);
+  }
+  .qtopic{color:var(--accent);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+  .qtext{font-size:1.05rem;margin-bottom:14px;line-height:1.5;}
+  .qtext b{color:var(--accent);}
+  .options{display:grid;gap:10px;}
+  .opt{
+    display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;
+    background:#0f172a;border:2px solid #334155;cursor:pointer;transition:.15s;
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt.selected{border-color:var(--accent);background:#0c4a6e;}
+  .opt .letter{
+    width:26px;height:26px;border-radius:50%;background:#334155;color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;
+  }
+  .opt.selected .letter{background:var(--accent);color:#0f172a;}
+  #login-card label{display:block;margin:10px 0 6px;color:var(--muted);font-size:.9rem;}
+  #login-card input{
+    width:100%;padding:12px 14px;border-radius:10px;border:2px solid #334155;
+    background:#0f172a;color:var(--text);font-size:1rem;
+  }
+  #login-card input:focus{outline:none;border-color:var(--accent);}
+  .btn{
+    display:inline-block;padding:13px 26px;border-radius:10px;border:none;
+    background:var(--accent);color:#0f172a;font-weight:700;font-size:1rem;cursor:pointer;
+    margin-top:16px;transition:.15s;
+  }
+  .btn:hover{background:#0ea5e9;}
+  .btn:disabled{background:#334155;color:var(--muted);cursor:not-allowed;}
+  .btn-secondary{background:#334155;color:var(--text);}
+  .nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:8px;}
+  .progress-wrap{background:#0f172a;border-radius:8px;height:8px;overflow:hidden;margin:14px 0;}
+  .progress-bar{height:100%;background:var(--accent2);transition:.2s;width:0%;}
+  .grid-nav{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:16px 0;}
+  .grid-nav div{
+    aspect-ratio:1;border-radius:6px;background:#334155;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer;
+  }
+  .grid-nav div.done{background:var(--accent2);color:#0f172a;font-weight:700;}
+  .grid-nav div.current{outline:2px solid var(--accent);}
+  #result-card{text-align:center;}
+  #result-card .score{font-size:3rem;font-weight:800;color:var(--accent2);margin:10px 0;}
+  #result-card .status{font-size:1.2rem;font-weight:700;margin-bottom:14px;}
+  .status.pass{color:var(--accent2);}
+  .status.fail{color:var(--danger);}
+  .hidden{display:none !important;}
+  #submit-note{color:var(--muted);font-size:.85rem;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>📘 Unit 1 – Collocation Test</h1>
+      <p>Lớp 6 · School Supplies, Subjects, Places, Types of Schools, People at School · 50 câu</p>
+    </div>
+    <div id="timer">40:00</div>
+  </header>
+
+  <!-- LOGIN -->
+  <div class="card" id="login-card">
+    <label for="hoten">Họ và tên học sinh</label>
+    <input type="text" id="hoten" placeholder="Ví dụ: Nguyễn Văn A">
+    <label for="lop">Lớp</label>
+    <input type="text" id="lop" placeholder="Ví dụ: 6A1">
+    <button class="btn" id="start-btn">Bắt đầu làm bài</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="quiz-card">
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="qtopic" id="q-topic"></div>
+    <div class="qtext" id="q-text"></div>
+    <div class="options" id="q-options"></div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" id="prev-btn">← Câu trước</button>
+      <button class="btn" id="next-btn">Câu tiếp →</button>
+    </div>
+    <div class="grid-nav" id="grid-nav"></div>
+    <button class="btn" id="submit-btn" style="width:100%;background:var(--accent2);">Nộp bài</button>
+    <p id="submit-note"></p>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card hidden" id="result-card">
+    <h2>✅ Đã nộp bài</h2>
+    <div class="score" id="score-display">--/50</div>
+    <div class="status" id="status-display"></div>
+    <p style="color:var(--muted);">Kết quả đã được gửi cho giáo viên. Bạn không cần làm gì thêm.</p>
+  </div>
+</div>
+
+<script>
+// ================== DATA ==================
+const QUESTIONS = [["School Supplies", "I have to ____ my school bag to school every morning.", ["carry", "do", "make", "play"], 0], ["School Supplies", "Don't forget to ____ your books in your school bag before you leave home.", ["put", "take", "carry", "wear"], 0], ["School Supplies", "Can you ____ your pencil case and take out a pen?", ["open", "close", "carry", "wear"], 0], ["School Supplies", "I always ____ my pens in my pencil case.", ["keep", "wear", "do", "carry"], 0], ["School Supplies", "You can ____ a pencil sharpener to sharpen your pencil.", ["use", "wear", "play", "carry"], 0], ["School Supplies", "She wants to ____ her pencil with a sharpener.", ["sharpen", "cut", "break", "open"], 0], ["School Supplies", "You can ____ out a mistake with a rubber.", ["rub", "cut", "clean", "wash"], 0], ["School Supplies", "She has a ____ rubber in her pencil case.", ["small", "long", "heavy", "loud"], 0], ["School Supplies", "We use a compass to ____ a circle in Maths class.", ["draw", "write", "cut", "make"], 0], ["School Supplies", "You can ____ a calculator to do Maths.", ["use", "wear", "carry", "open"], 0], ["School Supplies", "I like to ____ new words in my notebook.", ["write", "draw", "open", "keep"], 0], ["School Supplies", "All students have to ____ a school uniform.", ["wear", "carry", "use", "keep"], 0], ["School Subjects", "I ____ English every day at school.", ["learn", "play", "do", "make"], 0], ["School Subjects", "We have an English ____ every Monday morning.", ["lesson", "teacher", "room", "bag"], 0], ["School Subjects", "We ____ Vietnamese at school.", ["learn", "do", "play", "make"], 0], ["School Subjects", "My brother ____ Russian at his school.", ["learns", "plays", "does", "makes"], 0], ["School Subjects", "It's useful to ____ a foreign language.", ["learn", "do", "make", "play"], 0], ["School Subjects", "She can ____ two foreign languages.", ["speak", "write", "read", "draw"], 0], ["School Subjects", "We ____ history on Tuesdays.", ["study", "do", "play", "make"], 0], ["School Subjects", "The ____ lesson was about ancient Vietnam.", ["history", "maths", "art", "music"], 0], ["School Subjects", "We ____ maths every day at school.", ["do", "play", "make", "take"], 0], ["School Subjects", "He is very ____ at maths.", ["good", "strong", "fast", "high"], 0], ["School Subjects", "We ____ science twice a week.", ["study", "do", "play", "make"], 0], ["School Subjects", "We did a science ____ in the lab.", ["experiment", "room", "bag", "test"], 0], ["School Subjects", "She wants to ____ biology at university.", ["study", "do", "play", "make"], 0], ["School Subjects", "We ____ art on Friday afternoons.", ["do", "study", "play", "make"], 0], ["School Places", "I ____ into the classroom when the bell rings.", ["go", "carry", "do", "make"], 0], ["School Places", "The students always ____ the classroom before they go home.", ["clean", "open", "draw", "carry"], 0], ["School Places", "Every morning, we ____ to the computer room for IT class.", ["go", "carry", "do", "wear"], 0], ["School Places", "The students often ____ in the computer room after school.", ["work", "play", "sleep", "cook"], 0], ["School Places", "I like to ____ books from the library.", ["borrow", "carry", "sell", "cut"], 0], ["School Places", "It's quiet, so I like to ____ in the library.", ["read", "shout", "cook", "swim"], 0], ["School Places", "The students ____ vegetables in the school garden.", ["grow", "cook", "sell", "carry"], 0], ["School Places", "We often ____ in the playground at break time.", ["play", "study", "cook", "swim"], 0], ["School Places", "The children like to ____ around the playground.", ["run", "swim", "cook", "write"], 0], ["School Places", "We ____ in the swimming pool during summer.", ["swim", "run", "study", "cook"], 0], ["School Places", "Our school has its own swimming ____.", ["pool", "room", "garden", "bag"], 0], ["School Places", "The students ____ plants in the greenhouse.", ["grow", "cook", "sell", "carry"], 0], ["Types of Schools", "My little sister goes to ____ school.", ["primary", "secondary", "international", "boarding"], 0], ["Types of Schools", "She is a primary school ____.", ["student", "teacher", "room", "bag"], 0], ["Types of Schools", "He studies at a lower secondary ____.", ["school", "room", "garden", "bag"], 0], ["Types of Schools", "She has to ____ at a boarding school far from home.", ["live", "cook", "swim", "draw"], 0], ["Types of Schools", "My cousin decided to ____ at a boarding school this year.", ["study", "cook", "swim", "draw"], 0], ["Types of Schools", "He studies at an international ____.", ["school", "room", "garden", "bag"], 0], ["People at School", "There is a ____ student in our class this week.", ["new", "old", "big", "long"], 0], ["People at School", "David is a ____ of mine.", ["classmate", "teacher", "student", "friend"], 0], ["People at School", "I like to ____ next to my classmate.", ["sit", "stand", "run", "swim"], 0], ["People at School", "It is easy for her to ____ friends at a new school.", ["make", "do", "take", "have"], 0], ["People at School", "Miss Hoa is a very ____ teacher; she never shouts at us.", ["kind", "strict", "new", "old"], 0], ["People at School", "Mr. Nam is a ____ teacher; he doesn't allow any talking in class.", ["strict", "kind", "new", "old"], 0]];
+
+const TIME_LIMIT_SECONDS = 40 * 60; // 40 phút cho 50 câu
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxn_t6O7MIVq6iv-OUC6PTffjKyrBPuT6PHJPUtkDm4Nd57SgN0feRc0k259YANB1w/exec";
+
+// ================== STATE ==================
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let timerInterval = null;
+let secondsLeft = TIME_LIMIT_SECONDS;
+let studentName = "", studentClass = "";
+let submitted = false;
+
+const loginCard = document.getElementById('login-card');
+const quizCard = document.getElementById('quiz-card');
+const resultCard = document.getElementById('result-card');
+const timerEl = document.getElementById('timer');
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  const name = document.getElementById('hoten').value.trim();
+  const lop = document.getElementById('lop').value.trim();
+  if(!name || !lop){
+    alert('Vui lòng nhập đầy đủ họ tên và lớp trước khi bắt đầu.');
+    return;
+  }
+  studentName = name; studentClass = lop;
+  loginCard.classList.add('hidden');
+  quizCard.classList.remove('hidden');
+  buildGridNav();
+  renderQuestion();
+  startTimer();
+});
+
+function startTimer(){
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    updateTimerDisplay();
+    if(secondsLeft <= 0){
+      clearInterval(timerInterval);
+      submitQuiz(true);
+    }
+  }, 1000);
+}
+function updateTimerDisplay(){
+  const m = Math.floor(secondsLeft/60).toString().padStart(2,'0');
+  const s = (secondsLeft%60).toString().padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
+  if(secondsLeft <= 300) timerEl.classList.add('warn');
+}
+
+function buildGridNav(){
+  const nav = document.getElementById('grid-nav');
+  nav.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.textContent = i+1;
+    d.addEventListener('click', () => { current = i; renderQuestion(); });
+    nav.appendChild(d);
+  });
+}
+function refreshGridNav(){
+  const nav = document.getElementById('grid-nav');
+  [...nav.children].forEach((d, i) => {
+    d.classList.toggle('done', answers[i] !== null);
+    d.classList.toggle('current', i === current);
+  });
+}
+
+function renderQuestion(){
+  const [topic, text, options] = QUESTIONS[current];
+  document.getElementById('q-topic').textContent = `Câu ${current+1}/${QUESTIONS.length} — ${topic}`;
+  document.getElementById('q-text').innerHTML = text.replace('____','<b>____</b>');
+  const optWrap = document.getElementById('q-options');
+  optWrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  options.forEach((opt, idx) => {
+    const div = document.createElement('div');
+    div.className = 'opt' + (answers[current] === idx ? ' selected' : '');
+    div.innerHTML = `<span class="letter">${letters[idx]}</span><span>${opt}</span>`;
+    div.addEventListener('click', () => {
+      answers[current] = idx;
+      renderQuestion();
+      refreshGridNav();
+    });
+    optWrap.appendChild(div);
+  });
+  document.getElementById('progress-bar').style.width =
+    `${((current+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('prev-btn').disabled = current === 0;
+  document.getElementById('next-btn').textContent =
+    current === QUESTIONS.length - 1 ? 'Câu cuối' : 'Câu tiếp →';
+  refreshGridNav();
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => {
+  if(current > 0){ current--; renderQuestion(); }
+});
+document.getElementById('next-btn').addEventListener('click', () => {
+  if(current < QUESTIONS.length - 1){ current++; renderQuestion(); }
+});
+
+document.getElementById('submit-btn').addEventListener('click', () => {
+  const unanswered = answers.filter(a => a === null).length;
+  if(unanswered > 0){
+    if(!confirm(`Bạn còn ${unanswered} câu chưa trả lời. Bạn có chắc muốn nộp bài không?`)) return;
+  }
+  submitQuiz(false);
+});
+
+function submitQuiz(auto){
+  if(submitted) return;
+  submitted = true;
+  clearInterval(timerInterval);
+
+  let correct = 0;
+  QUESTIONS.forEach((q, i) => {
+    if(answers[i] === q[3]) correct++;
+  });
+  const total = QUESTIONS.length;
+  const passed = correct >= Math.round(total * 0.8); // >=40/50 = đạt (80%)
+
+  quizCard.classList.add('hidden');
+  resultCard.classList.remove('hidden');
+  document.getElementById('score-display').textContent = `${correct}/${total}`;
+  const statusEl = document.getElementById('status-display');
+  statusEl.textContent = passed ? 'ĐẠT YÊU CẦU' : 'CHƯA ĐẠT';
+  statusEl.className = 'status ' + (passed ? 'pass' : 'fail');
+
+  sendResult({
+    lop_hoc: "GS6",
+    hocSinh: studentName,
+    lop: studentClass,
+    bai: "Unit1_ColloTest50",
+    diemTN: correct,
+    tongTN: total,
+    datYeuCau: passed,
+    tuDong: auto
+  });
+}
+
+function sendResult(data){
+  if(!WEBAPP_URL || WEBAPP_URL.indexOf('PASTE_YOUR') === 0){
+    console.warn('WEBAPP_URL chưa được cấu hình — kết quả chỉ hiển thị tại chỗ, chưa gửi được cho giáo viên.');
+    document.getElementById('submit-note').textContent =
+      '(Lưu ý: đường dẫn nhận kết quả chưa được cấu hình.)';
+    return;
+  }
+  fetch(WEBAPP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(data)
+  }).catch(err => console.error('Gửi kết quả thất bại:', err));
+}
+</script>
+</body>
+</html>
